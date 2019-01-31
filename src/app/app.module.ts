@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShareMaterialModule } from './share-material/share-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { GenericComponent } from './generic/generic.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GenericComponent
   ],
   imports: [
     BrowserModule,
