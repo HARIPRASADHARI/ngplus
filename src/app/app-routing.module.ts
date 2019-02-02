@@ -4,12 +4,10 @@ import { GenericComponent } from './generic/generic.component';
 
 const routes: Routes = [
   {
-    path: '', component: GenericComponent,
-    children: [
-      {
-        path: '', loadChildren: './login/login.module#LoginModule'
-      }
-    ]
+    path: '', loadChildren: './login/login.module#LoginModule'
+  },
+  {
+    path: 'signup', loadChildren: './sign-up-form/sign-up-form.module#SignUpFormModule'
   }
 ];
 

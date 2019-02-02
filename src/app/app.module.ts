@@ -7,13 +7,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShareMaterialModule } from './share-material/share-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { GenericComponent } from './generic/generic.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GenericComponent
+    GenericComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
