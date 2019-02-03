@@ -1,3 +1,13 @@
-<p>
-  login-form works!
-</p>
+<div class="example-container">
+  <form [formGroup]="loginForm" (ngSubmit)="loginSubmit(loginForm)">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <mat-form-field>
+        <input matInput type="text" formControlName="username" placeholder="User Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" formControlName="password" placeholder="Password">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">submit</button>
+    </div>
+  </form>
+</div>
