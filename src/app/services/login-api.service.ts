@@ -10,9 +10,13 @@ export class LoginApiService {
   constructor(
     private apiService: ApiService
   ) { }
-  userSignUp(body?:any) {
+  userSignUp(body?: any) {
     const signup = `${environment.base_url}/login`;
-    return this.apiService.post(signup,body);
+    return this.apiService.post(signup, body);
+  }
+  userSignIn(body?: any) {
+    const signIn = `${environment.base_url}/signin`;
+    return this.apiService.post(signIn, body);
   }
   getGenres() {
     const getAllGenres = `${environment.base_url}/genres`;

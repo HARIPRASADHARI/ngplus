@@ -11,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { GenericComponent } from './generic/generic.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -34,7 +35,7 @@ import { FooterComponent } from './components/footer/footer.component';
   ],
   exports: [
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

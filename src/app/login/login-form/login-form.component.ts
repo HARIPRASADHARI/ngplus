@@ -36,5 +36,13 @@ export class LoginFormComponent implements OnInit {
       console.log(err);
     })
   }
+  signIn(){
+     console.log(this.loginForm.value);
+     this.login.userSignIn(this.loginForm.value).subscribe(res=>{
+       console.log(res);
+     },err=>{
+       console.log(err);
+     })
+  }
 
 }
