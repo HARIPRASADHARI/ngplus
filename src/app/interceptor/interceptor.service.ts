@@ -16,10 +16,15 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 })
 export class InterceptorService implements HttpInterceptor {
 
-  constructor() { }
+  constructor(
+    private storageService: StorageService
+  ) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let token;
-    const get_token = this
+    const get_token = this.storageService.getData('token');
+    if (get_token) {
+      return;
+    }
     return;
   }
 }

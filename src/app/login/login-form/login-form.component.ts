@@ -17,7 +17,8 @@ export class LoginFormComponent implements OnInit {
   ) {
     this.loginForm = this.fb.group({
       'name': [''],
-      'password': ['']
+      'password': [''],
+      'email': ['']
     });
   }
 
@@ -30,19 +31,19 @@ export class LoginFormComponent implements OnInit {
   }
   loginSubmit() {
     console.log(this.loginForm.value);
-    this.login.userSignUp(this.loginForm.value).subscribe(res=>{
+    this.login.userSignUp(this.loginForm.value).subscribe(res => {
       console.log(res);
-    },err=>{
+    }, err => {
       console.log(err);
     })
   }
-  signIn(){
-     console.log(this.loginForm.value);
-     this.login.userSignIn(this.loginForm.value).subscribe(res=>{
-       console.log(res);
-     },err=>{
-       console.log(err);
-     })
+  signIn() {
+    console.log(this.loginForm.value);
+    this.login.userSignIn(this.loginForm.value).subscribe(res => {
+      console.log(res);
+    }, err => {
+      console.log(err);
+    })
   }
 
 }
