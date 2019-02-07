@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { InterceptorService } from './interceptor/interceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShareMaterialModule } from './share-material/share-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { GenericComponent } from './generic/generic.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -35,7 +39,10 @@ import { CookieService } from 'ngx-cookie-service';
   ],
   exports: [
   ],
-  providers: [CookieService],
+  providers: [
+  CookieService,
+  { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

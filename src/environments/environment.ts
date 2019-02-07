@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://192.168.31.32:3000/api'
+  // base_url: 'http://192.168.31.32:3000/api'
+  base_url: 'http://192.168.1.110:3000/api'
 };
 
 /*

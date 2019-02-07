@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginApiService } from '../../services/login-api.service';
+import { StorageService } from '../../services/storage/storage.service';
+
 
 
 @Component({
@@ -14,6 +16,7 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private login: LoginApiService,
+    private storageService: StorageService
   ) {
     this.loginForm = this.fb.group({
       'name': [''],
@@ -23,6 +26,9 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getGeners();
+  }
+  getGeners(){
     this.login.getGenres().subscribe(res => {
       console.log(res);
     }, err => {
@@ -33,6 +39,7 @@ export class LoginFormComponent implements OnInit {
     console.log(this.loginForm.value);
     this.login.userSignUp(this.loginForm.value).subscribe(res => {
       console.log(res);
+      
     }, err => {
       console.log(err);
     })
@@ -41,9 +48,13 @@ export class LoginFormComponent implements OnInit {
     console.log(this.loginForm.value);
     this.login.userSignIn(this.loginForm.value).subscribe(res => {
       console.log(res);
+      this.storageService.setData('token', res.token);
+      this.getGeners();
+
     }, err => {
       console.log(err);
     })
   }
 
 }
+
