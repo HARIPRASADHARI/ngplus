@@ -29,8 +29,7 @@ export class InterceptorService implements HttpInterceptor {
           'Authorization': 'Bearer' + get_token
         }
       })
-    }
-    else{
+    } else {
       token = request.clone({
         setHeaders:{
 
