@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/genericapi/api.service';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +23,23 @@ export class LoginApiService {
     const getAllGenres = `${environment.base_url}/genres`;
     return this.apiService.get(getAllGenres);
   }
+  getLocation(): Observable<any> {
+    return Observable.create(observer => {
+        if(window.navigator && window.navigator.geolocation) {
+            window.navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    observer.next(position);
+                    observer.complete();
+                },
+                (error) => observer.error(error),
+                {
+                  enableHighAccuracy: true
+                }
+            );
+        } else {
+            observer.error('Unsupported Browser');
+        }
+    });
+}
+
 }

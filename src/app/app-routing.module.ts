@@ -8,6 +8,9 @@ const routes: Routes = [
   },
   {
     path: 'signup', loadChildren: './sign-up-form/sign-up-form.module#SignUpFormModule'
+  },
+  {
+    path: 'genres', loadChildren: './genres/genres.module#GenresModule'
   }
 ];
 

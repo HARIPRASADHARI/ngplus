@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginApiService } from '../../services/login-api.service';
 import { StorageService } from '../../services/storage/storage.service';
+import { Observable, Subject } from 'rxjs';
 
 
 
@@ -13,20 +14,57 @@ import { StorageService } from '../../services/storage/storage.service';
 export class LoginFormComponent implements OnInit {
 
   loginForm: FormGroup;
+  observable$;
+  subject$;
+  location$;
   constructor(
     private fb: FormBuilder,
     private login: LoginApiService,
     private storageService: StorageService,
+    
   ) {
     this.loginForm = this.fb.group({
       'name': [''],
       'password': [''],
       'email': ['']
     });
+
   }
 
-  ngOnInit() {
+  ngOnInit()  {
+    
+    this.login.getLocation().subscribe(res=>{
+      console.log(res);
+    })
     this.getGeners();
+    this.observable$ = Observable.create((observer) => {
+      observer.next(1);
+
+      observer.next(2);
+
+      observer.next(3);
+      observer.complete();
+    });
+    this.observable$.subscribe((res) => {
+      console.log(res);
+    }, (err) => {
+      console.log(err);
+    });
+
+
+  }
+
+  
+
+
+
+
+
+  behavior() {
+    this.subject$ = new Subject();
+    this.subject$.next(2);
+    this.subject$.next(3);
+    this.subject$.next(4);
   }
   getGeners() {
     this.login.getGenres().subscribe(res => {
