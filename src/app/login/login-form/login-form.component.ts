@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginApiService } from '../../services/login-api.service';
 import { StorageService } from '../../services/storage/storage.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, interval, of, fromEvent } from 'rxjs';
+import { take, map, filter, mergeMap, switchMap } from 'rxjs/operators';
 
 
 
@@ -11,17 +12,22 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss']
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   observable$;
   subject$;
   location$;
+  vat;
+  number$;
+  timeCount$: Observable<T>;
+  letters$;
+
   constructor(
     private fb: FormBuilder,
     private login: LoginApiService,
     private storageService: StorageService,
-    
+
   ) {
     this.loginForm = this.fb.group({
       'name': [''],
@@ -31,11 +37,78 @@ export class LoginFormComponent implements OnInit {
 
   }
 
-  ngOnInit()  {
-    
-    this.login.getLocation().subscribe(res=>{
+  ngOnInit() {
+
+    fromEvent(document, 'scroll').subscribe(res => console.log(res));
+
+    this.timeCount$ = interval(1000);
+    this.letters$ = of('J', 'I', 'OO');
+
+    this.letters$.pipe(switchMap(x => this.timeCount$.pipe(take(5), map(i => i + x)))).subscribe(res => {
+      console.log('lllllllllllllll', res);
+    });
+
+    // this.mergeMap$.pipe(take(2), map(i => i)).subscribe(res => console.log('pppppppppppppp', res));
+
+    // const example = this.letters$.pipe(mergeMap(x => of(this.mergeMap$.pipe(take(5), map(i => i + x)))));
+    // example.subscribe(res => {
+    //   console.log('llllllllllllllllllllll', res);
+    // });
+
+
+    // this.letters$.mergeMap(x => {
+    //   this.mergeMap$.pipe(take(5), map(i => i + x)).subscribe(res => {
+    //     console.log(res);
+    //   }, err => {
+
+    //   });
+    // });
+
+    this.behavior();
+    this.number$ = interval(1000);
+    this.number$.pipe(
+      take(15),
+      filter((x: any) => x % 2 === 0),
+      map((x: any) => x * 30),
+      filter(x => x > 180)).subscribe(res => {
+        this.vat = res;
+        console.log(this.vat);
+      }, err => {
+        console.log(err);
+      });
+    console.log(';;;;;;;;;;;;;', this.number$);
+    const observable = new Observable(observer => {
+      setInterval(() => observer.next('hello from Observable!'), 1000);
+      observer.complete();
+    });
+
+    observable.subscribe(v => console.log(v));
+
+
+    this.login.getLocation().subscribe(res => {
       console.log(res);
+    });
+
+    let c = Observable.create(observer => {
+      if (window.navigator && window.navigator.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(
+          (position) => {
+            observer.next(position);
+            observer.complete();
+          },
+          (error) => observer.error(error),
+          {
+            enableHighAccuracy: true
+          }
+        );
+      } else {
+        observer.error('Unsupported Browser');
+      }
+    });
+    c.subscribe(res => {
+      console.log(';;;;;;;;;;;;;;;;;', res);
     })
+
     this.getGeners();
     this.observable$ = Observable.create((observer) => {
       observer.next(1);
@@ -52,16 +125,24 @@ export class LoginFormComponent implements OnInit {
     });
 
 
+
+
   }
 
-  
 
+  ngOnDestroy(): void {
+    this.observable$.unsubscribe();
+    this.subject$.unsubscribe();
+  }
 
 
 
 
   behavior() {
-    this.subject$ = new Subject();
+    this.subject$ = new BehaviorSubject(800);
+    this.subject$.subscribe(x => {
+      console.log('sub', x);
+    })
     this.subject$.next(2);
     this.subject$.next(3);
     this.subject$.next(4);
