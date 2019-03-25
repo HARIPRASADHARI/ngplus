@@ -12,10 +12,29 @@
   <button 
   (click)="loginSubmit()"
   mat-raised-button color="primary" type="submit">submit</button>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" 
+    [(ngModel)]="checkQuery" (ngModelChange)="searchQuery($event)"
+    [ngModelOptions]="{standalone:true}"
+    >
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let gen of genresList" [value]="gen.genres">
+        <span>{{gen.genres}}</span> 
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <input matInput type="text"
+    [(ngModel)]="checkQuery" (ngModelChange)="searchQuery($event)"
+    [ngModelOptions]="{standalone:true}"
+     placeholder="email id">
+  </mat-form-field>
 </form>
 </mat-card>
-<button 
+<button mat-raised-button color="primary" type="submit">Count</button>
+  <div id="map" style="width:500px; height:500px;">
   
-  mat-raised-button color="primary" type="submit">Count</button>
-<p>JJJJJJJJJJJ{{vat}}</p>
-<p>JJJJJJJJJJJJJJJJJJJJ{{$number}}</p>
+  </div>

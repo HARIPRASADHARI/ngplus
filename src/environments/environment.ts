@@ -3,10 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-	   base_url: 'http://localhost:3000/api'
-	//   base_url: 'http://192.168.1.110:3000/api'
-  	// base_url: 'http://192.168.1.52:3000/api'
+	production: false,
+	base_url: 'http://localhost:3000/api',
+	mapbox: {
+		accessToken: 'YOUR_TOKEN'
+	}
 };
 
 /*

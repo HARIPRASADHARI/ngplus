@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginApiService } from '../../services/login-api.service';
 import { StorageService } from '../../services/storage/storage.service';
 import { Observable, BehaviorSubject, interval, of, fromEvent } from 'rxjs';
 import { take, map, filter, mergeMap, switchMap } from 'rxjs/operators';
+// declare variable
+import * as mapboxgl from 'mapbox-gl';
 
 
 
@@ -20,9 +22,12 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   location$;
   vat;
   number$;
-  timeCount$: Observable<T>;
+  timeCount$: Observable<any>;
   letters$;
-
+  checkQuery;
+  genresList;
+  @ViewChild('map') mapContainer: ElementRef;
+  map: any;
   constructor(
     private fb: FormBuilder,
     private login: LoginApiService,
@@ -38,8 +43,24 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoicHJhc2FkMTloYXJpIiwiYSI6ImNqdGN6YWR5MTB6anU0YXA4NGpieGR4NHgifQ.m_QToLr3enpSd1Z-y0kRAw';
+    // tslint:disable-next-line:no-shadowed-variable
+    this.map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/navigation-preview-day-v2', // stylesheet location
+      center: [-96, 37.8], // starting position [lng, lat]
+      zoom: 3 // starting zoom
+      });
+      new mapboxgl.Popup({closeOnClick: false})
+.setLngLat([-96, 37.8])
+.setHTML('<h1>Hello World!</h1>')
+.addTo(this.map);
 
-    fromEvent(document, 'scroll').subscribe(res => console.log(res));
+    let c = Observable.create((observer) => {
+      observer.next('KKKKKKKKKKKK');
+    }).subscribe(res => console.log(res));
+
+    // fromEvent(document, 'scroll').subscribe(res => console.log(res));
 
     this.timeCount$ = interval(1000);
     this.letters$ = of('J', 'I', 'OO');
@@ -89,7 +110,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       console.log(res);
     });
 
-    let c = Observable.create(observer => {
+    let d = Observable.create(observer => {
       if (window.navigator && window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -105,9 +126,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         observer.error('Unsupported Browser');
       }
     });
-    c.subscribe(res => {
+    d.subscribe(res => {
       console.log(';;;;;;;;;;;;;;;;;', res);
-    })
+    });
 
     this.getGeners();
     this.observable$ = Observable.create((observer) => {
@@ -150,6 +171,23 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   getGeners() {
     this.login.getGenres().subscribe(res => {
       console.log(res);
+    }, err => {
+      console.log(err);
+    });
+  }
+  hasKeyValue(obj: Object, key) {
+    return obj.hasOwnProperty(key) && obj[key] !== '';
+  }
+  searchQuery(evt) {
+    console.log(evt);
+    const data = {
+      query: evt
+    };
+    //console.log('pppppppppppppppppp', this.hasKeyValue(data, 'query'));
+
+
+    this.login.getSearchData(data).subscribe(res => {
+    this.genresList = res['body'];
     }, err => {
       console.log(err);
     });

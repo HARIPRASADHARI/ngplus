@@ -23,23 +23,27 @@ export class LoginApiService {
     const getAllGenres = `${environment.base_url}/genres`;
     return this.apiService.get(getAllGenres);
   }
+  getSearchData(data?: any) {
+    const getUser = `${environment.base_url}/genres/search`;
+    return this.apiService.post(getUser, data);
+  }
   getLocation(): Observable<any> {
     return Observable.create(observer => {
-        if(window.navigator && window.navigator.geolocation) {
-            window.navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    observer.next(position);
-                    observer.complete();
-                },
-                (error) => observer.error(error),
-                {
-                  enableHighAccuracy: true
-                }
-            );
-        } else {
-            observer.error('Unsupported Browser');
-        }
+      if (window.navigator && window.navigator.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(
+          (position) => {
+            observer.next(position);
+            observer.complete();
+          },
+          (error) => observer.error(error),
+          {
+            enableHighAccuracy: true
+          }
+        );
+      } else {
+        observer.error('Unsupported Browser');
+      }
     });
-}
+  }
 
 }
